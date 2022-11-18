@@ -5,10 +5,10 @@ import PackageDescription
 
 let cxxSettings: [CXXSetting] = [
     .headerSearchPath("openal-soft/alc"),
-    .headerSearchPath("openal-soft/build"),
     .headerSearchPath("openal-soft/common"),
     .headerSearchPath("openal-soft/include"),
     .headerSearchPath("openal-soft"),
+    .headerSearchPath("build"),
 
     .define("NOMINMAX", .when(platforms: [.windows])),
     .define("_CRT_SECURE_NO_WARNINGS", .when(platforms: [.windows])),
