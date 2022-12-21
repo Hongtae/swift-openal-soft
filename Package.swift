@@ -37,7 +37,7 @@ let package = Package(
                 .target(name: "OpenAL_backend_oss", condition: .when(platforms: [.linux, .android])),
                 .target(name: "OpenAL_backend_opensl", condition: .when(platforms: [.android])),
 
-                .target(name: "OpenAL_mixer_sse", condition: .when(platforms: [.windows])),
+                .target(name: "OpenAL_mixer_sse", condition: .when(platforms: [.windows, .linux])),
                 .target(name: "OpenAL_mixer_neon", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
             ],
             path: "Sources",
