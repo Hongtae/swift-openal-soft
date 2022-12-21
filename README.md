@@ -31,4 +31,4 @@ alcCloseDevice(device)
 ```
 
 ### Take a look at the files in the following repository.
-https://github.com/Hongtae/SwiftVVD/tree/master/Sources/DKGame/Audio
+https://github.com/Hongtae/SwiftVVD/tree/main/Sources/DKGame/Audio
