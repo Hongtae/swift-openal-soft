@@ -15,6 +15,24 @@ let cxxSettings: [CXXSetting] = [
     .define("RESTRICT", to: "__restrict"),
 ]
 
+// The Xcode version of PackageDescription only recognizes Linux as
+// a non-Apple platform, not Windows, but unfortunately I have not yet found
+// a way to distinguish between SwiftPM and Xcode when building on a Mac.
+// Until Xcode's version of PackageDescription is updated to recognize Windows,
+// this seems to be the only way to build with Xcode.
+var windowsOnly: TargetDependencyCondition {
+#if os(Windows) || os(Linux) // SwiftPM
+    return .when(platforms: [.windows])
+#endif // Xcode or SwiftPM (unable to identify)
+    return .when(platforms: [.windows, .linux])
+}
+var androidOnly: TargetDependencyCondition {
+#if os(Windows) || os(Linux) // SwiftPM
+    return .when(platforms: [.android])
+#endif // Xcode or SwiftPM (unable to identify)
+    return .when(platforms: [.android, .linux])
+}
+
 let package = Package(
     name: "OepnAL-Soft",
     products: [
@@ -30,12 +48,14 @@ let package = Package(
             dependencies: [
                 .target(name: "OpenAL_backend"),
 
-                .target(name: "OpenAL_backend_windows", condition: .when(platforms: [.windows])),
-                .target(name: "OpenAL_backend_dsound", condition: .when(platforms: [.windows])),
+                .target(name: "OpenAL_backend_windows", condition: windowsOnly),
+                .target(name: "OpenAL_backend_dsound", condition: windowsOnly),
+
                 .target(name: "OpenAL_backend_coreaudio", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
+
                 //.target(name: "OpenAL_backend_alsa", condition: .when(platforms: [.linux, .android])),
                 .target(name: "OpenAL_backend_oss", condition: .when(platforms: [.linux, .android])),
-                .target(name: "OpenAL_backend_opensl", condition: .when(platforms: [.android])),
+                .target(name: "OpenAL_backend_opensl", condition: androidOnly),
 
                 .target(name: "OpenAL_mixer_sse", condition: .when(platforms: [.windows, .linux])),
                 .target(name: "OpenAL_mixer_neon", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
@@ -64,7 +84,7 @@ let package = Package(
 
                 .define("ALC_API", to: "__declspec(dllexport)", .when(platforms: [.windows])),
                 .define("AL_API", to: "__declspec(dllexport)", .when(platforms: [.windows])),
-                
+
                 //.unsafeFlags(["-fms-extensions"], .when(platforms: [.windows])),
                 .unsafeFlags(["-Wno-unused-value"]),
                 .unsafeFlags(["-Oz"], .when(platforms: [.windows], configuration: .release)),
