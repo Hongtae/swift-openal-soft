@@ -21,16 +21,18 @@ let cxxSettings: [CXXSetting] = [
 // Until Xcode's version of PackageDescription is updated to recognize Windows,
 // this seems to be the only way to build with Xcode.
 var windowsOnly: TargetDependencyCondition {
-#if os(Windows) || os(Linux) // SwiftPM
+#if os(Windows) || os(Linux)    // SwiftPM
     return .when(platforms: [.windows])
-#endif // Xcode or SwiftPM (unable to identify)
+#else   // Xcode or SwiftPM (unable to identify)
     return .when(platforms: [.windows, .linux])
+#endif
 }
 var androidOnly: TargetDependencyCondition {
-#if os(Windows) || os(Linux) // SwiftPM
+#if os(Windows) || os(Linux)    // SwiftPM
     return .when(platforms: [.android])
-#endif // Xcode or SwiftPM (unable to identify)
+#else   // Xcode or SwiftPM (unable to identify)
     return .when(platforms: [.android, .linux])
+#endif
 }
 
 let package = Package(
