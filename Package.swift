@@ -35,6 +35,23 @@ var androidOnly: TargetDependencyCondition {
 #endif
 }
 
+var mixer_simd_sources: [String] {
+#if arch(i386) || arch(x86_64)
+    [
+        "openal-soft/core/mixer/mixer_sse.cpp",
+        "openal-soft/core/mixer/mixer_sse2.cpp",
+        "openal-soft/core/mixer/mixer_sse3.cpp",
+        "openal-soft/core/mixer/mixer_sse41.cpp",
+    ]
+#elseif arch(arm) || arch(arm64)
+    [
+        "openal-soft/core/mixer/mixer_neon.cpp"
+    ]
+#else
+    []
+#endif
+}
+
 let package = Package(
     name: "OepnAL-Soft",
     products: [
@@ -55,21 +72,16 @@ let package = Package(
 
                 .target(name: "OpenAL_backend_coreaudio", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
 
-                //.target(name: "OpenAL_backend_alsa", condition: .when(platforms: [.linux, .android])),
+                .target(name: "OpenAL_backend_alsa", condition: .when(platforms: [.linux])),
                 .target(name: "OpenAL_backend_oss", condition: .when(platforms: [.linux, .android])),
                 .target(name: "OpenAL_backend_opensl", condition: androidOnly),
 
-                .target(name: "OpenAL_mixer_sse", condition: .when(platforms: [.windows, .linux])),
-                .target(name: "OpenAL_mixer_neon", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
+                .target(name: "OpenAL_mixer"),
             ],
             path: "Sources",
             exclude: [
                 "openal-soft/alc/backends",
-                "openal-soft/core/mixer/mixer_sse.cpp",
-                "openal-soft/core/mixer/mixer_sse2.cpp",
-                "openal-soft/core/mixer/mixer_sse3.cpp",
-                "openal-soft/core/mixer/mixer_sse41.cpp",
-                "openal-soft/core/mixer/mixer_neon.cpp",
+                "openal-soft/core/mixer",
                 "openal-soft/core/rtkit.cpp",
                 "openal-soft/core/dbus_wrap.cpp",
             ],
@@ -101,22 +113,11 @@ let package = Package(
                 .linkedFramework("CoreFoundation", .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
             ]),
         .target(
-            name: "OpenAL_mixer_sse",
+            name: "OpenAL_mixer",
             path: "Sources",
             sources: [
-                "openal-soft/core/mixer/mixer_sse.cpp",
-                "openal-soft/core/mixer/mixer_sse2.cpp",
-                "openal-soft/core/mixer/mixer_sse3.cpp",
-                "openal-soft/core/mixer/mixer_sse41.cpp",
-            ],
-            publicHeadersPath: "swift_module",
-            cxxSettings: cxxSettings),
-        .target(
-            name: "OpenAL_mixer_neon",
-            path: "Sources",
-            sources: [
-                "openal-soft/core/mixer/mixer_neon.cpp",
-            ],
+                "openal-soft/core/mixer/mixer_c.cpp",
+            ] + mixer_simd_sources,
             publicHeadersPath: "swift_module",
             cxxSettings: cxxSettings),
         .target(
