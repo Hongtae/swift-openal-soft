@@ -52,6 +52,8 @@ var mixer_simd_sources: [String] {
 #endif
 }
 
+let applePlatforms: [Platform] = [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS]
+
 let package = Package(
     name: "OepnAL-Soft",
     products: [
@@ -70,7 +72,7 @@ let package = Package(
                 .target(name: "OpenAL_backend_windows", condition: windowsOnly),
                 .target(name: "OpenAL_backend_dsound", condition: windowsOnly),
 
-                .target(name: "OpenAL_backend_coreaudio", condition: .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
+                .target(name: "OpenAL_backend_coreaudio", condition: .when(platforms: applePlatforms)),
 
                 .target(name: "OpenAL_backend_alsa", condition: .when(platforms: [.linux])),
                 .target(name: "OpenAL_backend_oss", condition: .when(platforms: [.linux, .android])),
@@ -110,7 +112,8 @@ let package = Package(
                 .linkedLibrary("Winmm", .when(platforms: [.windows])),
                 .linkedLibrary("swiftCore", .when(platforms: [.windows])), // swift_addNewDSOImage
 
-                .linkedFramework("CoreFoundation", .when(platforms: [.macOS, .iOS, .macCatalyst, .tvOS, .watchOS])),
+                .linkedFramework("CoreFoundation", .when(platforms: applePlatforms)),
+                .unsafeFlags(["-fprofile-instr-generate"], .when(platforms: applePlatforms)),
             ]),
         .target(
             name: "OpenAL_mixer",
