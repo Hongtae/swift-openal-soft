@@ -13,6 +13,9 @@ let cxxSettings: [CXXSetting] = [
     .define("NOMINMAX", .when(platforms: [.windows])),
     .define("_CRT_SECURE_NO_WARNINGS", .when(platforms: [.windows])),
     .define("RESTRICT", to: "__restrict"),
+
+    // FIXME: temporarily disable Xcode code coverage to prevent linker errors.
+    .unsafeFlags(["-fno-profile-instr-generate", "-fno-coverage-mapping"], .when(platforms: applePlatforms, configuration: .debug)),
 ]
 
 // The Xcode version of PackageDescription only recognizes Linux as
