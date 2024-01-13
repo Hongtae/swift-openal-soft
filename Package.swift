@@ -113,7 +113,6 @@ let package = Package(
                 .linkedLibrary("swiftCore", .when(platforms: [.windows])), // swift_addNewDSOImage
 
                 .linkedFramework("CoreFoundation", .when(platforms: applePlatforms)),
-                .unsafeFlags(["-fprofile-instr-generate"], .when(platforms: applePlatforms)),
             ]),
         .target(
             name: "OpenAL_mixer",
