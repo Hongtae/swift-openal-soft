@@ -78,6 +78,8 @@ let package = Package(
                 .target(name: "OpenAL_backend_coreaudio", condition: .when(platforms: applePlatforms)),
 
                 .target(name: "OpenAL_backend_alsa", condition: .when(platforms: [.linux])),
+                //.target(name: "OpenAL_backend_pulseaudio", condition: .when(platforms: [.linux])),
+                //.target(name: "OpenAL_backend_pipewire", condition: .when(platforms: [.linux])),
                 .target(name: "OpenAL_backend_oss", condition: .when(platforms: [.linux, .android])),
                 .target(name: "OpenAL_backend_opensl", condition: androidOnly),
 
@@ -175,6 +177,24 @@ let package = Package(
             path: "Sources",
             sources: [
                 "openal-soft/alc/backends/alsa.cpp",
+            ],
+            publicHeadersPath: "swift_module",
+            cxxSettings: cxxSettings,
+            linkerSettings: []),
+        .target(
+            name: "OpenAL_backend_pulseaudio",
+            path: "Sources",
+            sources: [
+                "openal-soft/alc/backends/pulseaudio.cpp",
+            ],
+            publicHeadersPath: "swift_module",
+            cxxSettings: cxxSettings,
+            linkerSettings: []),
+        .target(
+            name: "OpenAL_backend_pipewire",
+            path: "Sources",
+            sources: [
+                "openal-soft/alc/backends/pipewire.cpp",
             ],
             publicHeadersPath: "swift_module",
             cxxSettings: cxxSettings,
