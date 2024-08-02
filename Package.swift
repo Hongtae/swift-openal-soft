@@ -12,6 +12,7 @@ let cxxSettings: [CXXSetting] = [
 
     .define("NOMINMAX", .when(platforms: [.windows])),
     .define("_CRT_SECURE_NO_WARNINGS", .when(platforms: [.windows])),
+    .define("_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH", .when(platforms:[.windows])),
     .define("RESTRICT", to: "__restrict"),
 
     // FIXME: temporarily disable Xcode code coverage to prevent linker errors.
