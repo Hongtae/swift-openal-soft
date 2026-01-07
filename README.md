@@ -31,4 +31,4 @@ alcCloseDevice(device)
 ```
 
 ### Take a look at the files in the following repository.
-[https://github.com/Hongtae/SwiftVVD/tree/main/Sources/VVD/Audio](https://github.com/Hongtae/SwiftVVD/tree/93749b8ec7cb32b7b11a1e2a6c92f688aece55db/Sources/VVD/Audio)
+[https://github.com/Hongtae/SwiftVVD/tree/main/Sources/VVD/Audio](https://github.com/Hongtae/SwiftVVD/tree/694cd779b545ba8b3806c42492dcb39cd2eeb82e/Sources/VVD/Audio)
